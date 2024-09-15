@@ -1,0 +1,24 @@
+import cv2
+from pyzbar.pyzbar import decode
+import numpy as np
+
+def scan_barcodes(frame):
+    # Convert frame to grayscale for better barcode detection
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    barcodes = decode(gray)
+    for barcode in barcodes:
+        (x, y, w, h) = barcode.rect
+        barcode_data = barcode.data.decode('utf-8')
+        barcode_type = barcode.type
+        
+        # Draw rectangle around barcode
+        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        
+        # Display the barcode data
+        cv2.putText(frame, f'{barcode_data} ({barcode_type})', (x, y - 10),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+    
+    return frame
+
+# In your `update_frame` method:
+frame = scan_barcodes(frame)
