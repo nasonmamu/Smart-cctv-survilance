@@ -4,16 +4,16 @@ import subprocess
 def fn_get_txt_sysarg():
     """Harvest a single (the only expected) command line argument"""
     try:
-        return sys.argv[1]    # str() would be redundant here
-    except:
-        ErrorMsg = 'Message from fn_get_txt_sysarg() in Script (' + sys.argv[0] + '):\n' + '\tThe Script did not receive a command line argument'
-        sys.exit(ErrorMsg)
+        return sys.argv[1]  # str() would be redundant here
+    except IndexError:
+        error_msg = f'Message from fn_get_txt_sysarg() in Script ({sys.argv[0]}):\n' \
+                    '\tThe Script did not receive a command line argument'
+        sys.exit(error_msg)
 
-def Open_Win_Explorer_and_Select_Fil(filepath):
-    # harvested from: https://stackoverflow.com/questions/281888/open-explorer-on-a-file
-    Popen_arg = 'explorer /select,"' + filepath + "'"    # str() is redundant here also
-    subprocess.Popen(Popen_arg)
+def open_win_explorer_and_select_file(filepath):
+    # Harvested from: https://stackoverflow.com/questions/281888/open-explorer-on-a-file
+    subprocess.Popen(['explorer', '/select,', filepath])
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
     filepath = fn_get_txt_sysarg()
-    Open_Win_Explorer_and_Select_Fil(filepath)
+    open_win_explorer_and_select_file(filepath)
